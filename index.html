@@ -484,10 +484,7 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <!-- Скрытый iframe — принимает ответ от Google Apps Script -->
-                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="onIframeLoad()"></iframe>
-
-                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="GET" target="hidden_iframe" novalidate>
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="GET" novalidate>
                     <div class="form-group" id="nameGroup">
                         <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
                         <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
@@ -609,7 +606,6 @@
 
         let currentLang = 'ru';
         let submitted = false;
-        let submitTimeout = null;
 
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -654,20 +650,14 @@
             });
         });
 
-        function onIframeLoad() {
-            if (submitted) {
-                clearTimeout(submitTimeout);
-                showSuccess();
-            }
-        }
-
         function showSuccess() {
-            submitted = false;
             document.getElementById('rsvpSection').style.display = 'none';
             document.getElementById('successBox').style.display = 'block';
         }
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            
             const nameInput = document.getElementById('userName');
             const nameGroup = document.getElementById('nameGroup');
             const attendanceGroup = document.getElementById('attendanceGroup');
@@ -698,7 +688,6 @@
             }
 
             if (!isValid) {
-                e.preventDefault();
                 return;
             }
 
@@ -708,16 +697,25 @@
             submitBtn.disabled = true;
             submitBtn.textContent = translations[currentLang].sending;
             networkError.style.display = 'none';
-            submitted = true;
 
-            submitTimeout = setTimeout(() => {
-                if (submitted) {
-                    submitted = false;
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = translations[currentLang].submit_btn;
-                    networkError.style.display = 'block';
-                }
-            }, 10000);
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData).toString();
+            const url = form.action + '?' + params;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                // no-cors mode doesn't give us response status, but request was sent
+                showSuccess();
+            } catch (error) {
+                // Network error
+                networkError.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = translations[currentLang].submit_btn;
+            }
         });
 
         document.getElementById('userName').addEventListener('input', function () {
