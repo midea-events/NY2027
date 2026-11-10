@@ -484,7 +484,8 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbwzJCVKTRSq0TVQZvtosRHkBorQZ_VB18TxEsF6Wy599cHaAP0Iyl1Wjc7M5CFk7c36/exec" method="POST" novalidate>
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbwzJCVKTRSq0TVQZvtosRHkBorQZ_VB18TxEsF6Wy599cHaAP0Iyl1Wjc7M5CFk7c36/exec" method="GET" target="hidden_iframe" novalidate>
                     <div class="form-group" id="nameGroup">
                         <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
                         <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
@@ -698,20 +699,13 @@
             submitBtn.textContent = translations[currentLang].sending;
             networkError.style.display = 'none';
 
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData).toString();
-            const url = form.action + '?' + params;
+            // Submit form to hidden iframe (works in all browsers without CORS issues)
+            form.submit();
             
-            // Send request without waiting for response (fire and forget)
-            fetch(url, {
-                method: 'GET',
-                mode: 'no-cors'
-            }).catch(error => {
-                console.error('Submit error:', error);
-            });
-            
-            // Show success immediately
-            showSuccess();
+            // Show success after a short delay
+            setTimeout(() => {
+                showSuccess();
+            }, 500);
         });
 
         document.getElementById('userName').addEventListener('input', function () {
