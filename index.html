@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Great Midea Corporate Event</title>
     <style>
-        /* === ПАЛИТРА: СТРОГИЙ ЧЁРНЫЙ + ЗОЛОТО (GATSBY) === */
         :root {
             --bg-color: #050505;
             --bg-light: #151515;
@@ -15,7 +14,6 @@
             --white: #f5f5f5;
             --black: #000000;
             --error-red: #e74c3c;
-
             --text-color: #f5f5f5;
             --font-serif: "Georgia", "Times New Roman", serif;
             --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -23,11 +21,7 @@
             --transition: 0.3s ease;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-color);
@@ -37,133 +31,57 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image:
-                radial-gradient(circle at top center, var(--bg-light) 0%, var(--bg-color) 70%);
+            background-image: radial-gradient(circle at top center, var(--bg-light) 0%, var(--bg-color) 70%);
             background-attachment: fixed;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            * { transition: none !important; }
-        }
-
-        *:focus-visible {
-            outline: 3px solid var(--gold);
-            outline-offset: 2px;
-        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+        *:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            background-color: rgba(5, 5, 5, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            background-color: rgba(5, 5, 5, 0.9); position: sticky; top: 0;
+            z-index: 100; backdrop-filter: blur(10px);
         }
 
         .brand {
-            font-family: var(--font-sans);
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--black);
-            background-color: var(--white);
-            padding: 4px 12px;
-            border-radius: 4px;
-            text-transform: uppercase;
+            font-family: var(--font-sans); font-size: 1.5rem; font-weight: 700;
+            letter-spacing: 2px; color: var(--black); background-color: var(--white);
+            padding: 4px 12px; border-radius: 4px; text-transform: uppercase;
         }
 
-        .lang-switch {
-            display: flex;
-            gap: 10px;
-        }
-
+        .lang-switch { display: flex; gap: 10px; }
         .lang-btn {
-            background: none;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: var(--font-sans);
-            font-weight: 600;
-            transition: var(--transition);
+            background: none; border: 1px solid var(--gold); color: var(--gold);
+            padding: 5px 10px; border-radius: 4px; cursor: pointer;
+            font-family: var(--font-sans); font-weight: 600; transition: var(--transition);
         }
+        .lang-btn.active, .lang-btn:hover { background-color: var(--gold); color: var(--black); }
 
-        .lang-btn.active, .lang-btn:hover {
-            background-color: var(--gold);
-            color: var(--black);
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; flex-grow: 1; }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            flex-grow: 1;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
+        .hero { text-align: center; margin-bottom: 50px; }
         .hero h1 {
-            font-family: var(--font-serif);
-            font-size: 2.8rem;
-            color: var(--gold);
-            margin-bottom: 10px;
-            line-height: 1.2;
-            font-weight: normal;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            font-family: var(--font-serif); font-size: 2.8rem; color: var(--gold);
+            margin-bottom: 10px; line-height: 1.2; font-weight: normal;
+            text-transform: uppercase; letter-spacing: 3px;
         }
-
         .hero p.subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 35px;
+            font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 35px;
         }
-
         .hero img {
-            width: 100%;
-            max-width: 600px;
-            border-radius: var(--radius);
+            width: 100%; max-width: 600px; border-radius: var(--radius);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-            margin: 0 auto;
-            display: block;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); margin: 0 auto; display: block;
         }
 
-        .event-details-wrapper {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-            align-items: stretch;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            flex: 1.5;
-        }
-
-        .event-image-container {
-            flex: 1;
-            display: flex;
-            min-width: 250px;
-        }
-
+        .event-details-wrapper { display: flex; gap: 30px; margin-bottom: 30px; align-items: stretch; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1.5; }
+        .event-image-container { flex: 1; display: flex; min-width: 250px; }
         .event-side-image {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            border-radius: var(--radius);
+            width: 100%; height: auto; object-fit: contain; border-radius: var(--radius);
             border: 1px solid rgba(212, 175, 55, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
@@ -171,224 +89,103 @@
         .info-card {
             background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 20px;
-            border-radius: var(--radius);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 20px; border-radius: var(--radius); text-align: center;
+            display: flex; flex-direction: column; justify-content: center;
         }
-
         .info-card h3 {
-            font-family: var(--font-serif);
-            color: var(--gold);
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            font-family: var(--font-serif); color: var(--gold);
+            font-size: 1.1rem; margin-bottom: 10px; letter-spacing: 1px;
         }
-
-        .info-card p {
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
+        .info-card p { font-size: 1rem; margin-bottom: 10px; }
 
         .map-btn {
-            display: inline-block;
-            background-color: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            margin-top: auto;
+            display: inline-block; background-color: transparent; color: var(--gold);
+            border: 1px solid var(--gold); padding: 8px 15px; text-decoration: none;
+            border-radius: 4px; font-size: 0.9rem; transition: var(--transition); margin-top: auto;
         }
-
-        .map-btn:hover {
-            background-color: rgba(212, 175, 55, 0.1);
-        }
+        .map-btn:hover { background-color: rgba(212, 175, 55, 0.1); }
 
         .warning-box {
             background-color: rgba(212, 175, 55, 0.05);
-            border-left: 4px solid var(--gold);
-            padding: 15px 20px;
-            margin-bottom: 30px;
-            color: var(--gold-light);
+            border-left: 4px solid var(--gold); padding: 15px 20px;
+            margin-bottom: 30px; color: var(--gold-light);
         }
 
         .description {
-            font-size: 1.1rem;
-            text-align: justify;
-            margin-bottom: 50px;
-            color: rgba(255, 255, 255, 0.8);
-            white-space: pre-line;
+            font-size: 1.1rem; text-align: justify; margin-bottom: 50px;
+            color: rgba(255, 255, 255, 0.8); white-space: pre-line;
         }
 
         .rsvp-section {
             background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 40px;
-            border-radius: var(--radius);
-            position: relative;
+            padding: 40px; border-radius: var(--radius); position: relative;
         }
-
         .rsvp-section::before, .rsvp-section::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 1px solid var(--gold);
+            content: ''; position: absolute; width: 30px; height: 30px; border: 1px solid var(--gold);
         }
         .rsvp-section::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
         .rsvp-section::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
 
-        .form-group {
-            margin-bottom: 30px;
-        }
-
+        .form-group { margin-bottom: 30px; }
         .form-label {
-            display: block;
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            color: var(--gold);
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            display: block; font-family: var(--font-serif); font-size: 1.2rem;
+            color: var(--gold); margin-bottom: 10px; letter-spacing: 1px;
         }
-
         .form-input {
-            width: 100%;
-            padding: 15px;
-            background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            color: var(--white);
-            font-size: 1rem;
-            font-family: var(--font-sans);
+            width: 100%; padding: 15px; background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px;
+            color: var(--white); font-size: 1rem; font-family: var(--font-sans);
             transition: var(--transition);
         }
+        .form-input:focus { border-color: var(--gold); background-color: rgba(255, 255, 255, 0.08); }
+        .form-input::placeholder { color: rgba(255, 255, 255, 0.3); }
 
-        .form-input:focus {
-            border-color: var(--gold);
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .radio-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .radio-label {
-            display: block;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .radio-label input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-
+        .radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .radio-label { display: block; position: relative; cursor: pointer; }
+        .radio-label input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
         .radio-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
+            display: flex; align-items: center; justify-content: center; padding: 15px;
             background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px;
+            font-size: 1.1rem; font-weight: 600; transition: var(--transition);
         }
-
         .radio-label input:checked ~ .radio-button {
-            background-color: var(--gold);
-            color: var(--black);
-            border-color: var(--gold);
+            background-color: var(--gold); color: var(--black); border-color: var(--gold);
         }
-
         .radio-label input:focus-visible ~ .radio-button {
-            outline: 3px solid var(--white);
-            outline-offset: 2px;
+            outline: 3px solid var(--white); outline-offset: 2px;
         }
 
         .error-msg, .network-error-msg {
-            color: var(--error-red);
-            font-size: 0.9rem;
-            margin-top: 5px;
-            display: none;
+            color: var(--error-red); font-size: 0.9rem; margin-top: 5px; display: none;
         }
-
-        .has-error .form-input, .has-error .radio-button {
-            border-color: var(--error-red);
-        }
-
-        .has-error .error-msg {
-            display: block;
-        }
-
+        .has-error .form-input, .has-error .radio-button { border-color: var(--error-red); }
+        .has-error .error-msg { display: block; }
         .network-error-msg {
-            text-align: center;
-            font-size: 1rem;
-            margin-top: 15px;
-            font-weight: bold;
+            text-align: center; font-size: 1rem; margin-top: 15px; font-weight: bold;
         }
 
         .submit-btn {
-            width: 100%;
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            padding: 18px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            font-family: var(--font-serif);
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: var(--transition);
+            width: 100%; background-color: var(--gold); color: var(--black);
+            border: none; padding: 18px; font-size: 1.2rem; font-weight: 700;
+            font-family: var(--font-serif); border-radius: 4px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px; transition: var(--transition);
         }
-
-        .submit-btn:hover:not(:disabled) {
-            background-color: var(--gold-hover);
-            transform: translateY(-2px);
-        }
-
-        .submit-btn:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
+        .submit-btn:hover:not(:disabled) { background-color: var(--gold-hover); transform: translateY(-2px); }
+        .submit-btn:active:not(:disabled) { transform: translateY(0); }
         .submit-btn:disabled {
-            background-color: #6a571c;
-            color: rgba(0, 0, 0, 0.6);
-            cursor: not-allowed;
-            transform: none;
+            background-color: #6a571c; color: rgba(0, 0, 0, 0.6);
+            cursor: not-allowed; transform: none;
         }
 
         .success-box {
-            display: none;
-            text-align: center;
-            background-color: rgba(212, 175, 55, 0.05);
-            border: 1px solid var(--gold);
-            padding: 40px;
-            border-radius: var(--radius);
+            display: none; text-align: center; background-color: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold); padding: 40px; border-radius: var(--radius);
         }
-
         .success-box h2 {
-            font-family: var(--font-serif);
-            color: var(--gold);
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            font-family: var(--font-serif); color: var(--gold);
+            margin-bottom: 10px; letter-spacing: 1px;
         }
 
         @media (max-width: 768px) {
@@ -453,7 +250,6 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <!-- Скрытый iframe для получения ответа от Google Apps Script -->
                 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="hidden"></iframe>
 
                 <form id="rsvpForm"
@@ -559,18 +355,14 @@
             currentLang = lang;
             document.documentElement.lang = lang;
 
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    element.textContent = translations[lang][key];
-                }
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.textContent = translations[lang][key];
             });
 
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
-                const key = element.getAttribute('data-i18n-placeholder');
-                if (translations[lang][key]) {
-                    element.placeholder = translations[lang][key];
-                }
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) el.placeholder = translations[lang][key];
             });
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -598,25 +390,24 @@
             document.getElementById('successBox').style.display = 'block';
         }
 
-        function showNetworkError() {
+        function showNetworkError(reason) {
             const submitBtn = document.getElementById('submitBtn');
             const networkError = document.getElementById('networkError');
             isSubmitting = false;
             submitBtn.disabled = false;
             submitBtn.textContent = translations[currentLang].submit_btn;
             networkError.style.display = 'block';
+            console.error('[RSVP] Sending failed:', reason || 'unknown');
         }
 
         const form = document.getElementById('rsvpForm');
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-
             if (isSubmitting) return;
 
             const nameInput = document.getElementById('userName');
             const attendanceRadios = document.getElementsByName('attendance');
-
             const nameGroup = document.getElementById('nameGroup');
             const attendanceGroup = document.getElementById('attendanceGroup');
 
@@ -631,10 +422,7 @@
             }
 
             for (const radio of attendanceRadios) {
-                if (radio.checked) {
-                    attendanceValue = radio.value;
-                    break;
-                }
+                if (radio.checked) { attendanceValue = radio.value; break; }
             }
 
             if (!attendanceValue) {
@@ -654,34 +442,76 @@
             submitBtn.textContent = translations[currentLang].sending;
             networkError.style.display = 'none';
 
-            // Устанавливаем значения скрытых полей
+            const timestamp = String(Date.now());
             document.getElementById('langInput').value = currentLang;
-            document.getElementById('timestampInput').value = new Date().getTime();
+            document.getElementById('timestampInput').value = timestamp;
 
-            // Нативная отправка формы в iframe
-            form.submit();
-        });
+            // Формируем URL со всеми параметрами
+            const params = new URLSearchParams();
+            params.set('name', nameInput.value.trim());
+            params.set('attendance', attendanceValue);
+            params.set('language', currentLang);
+            params.set('t', timestamp);
 
-        // Обработчик загрузки iframe для подтверждения успеха
-        document.getElementById('hidden_iframe').addEventListener('load', function() {
-            if (isSubmitting) {
-                // Небольшая задержка, чтобы GAS успел обработать данные
-                setTimeout(() => {
-                    showSuccess();
-                }, 500);
+            const baseUrl = form.getAttribute('action');
+            const fullUrl = baseUrl + '?' + params.toString();
+
+            // === ОСНОВНОЙ КАНАЛ: navigator.sendBeacon ===
+            // sendBeacon(url) без тела → GET-запрос по спецификации Beacon API,
+            // что совместимо с doGet в Google Apps Script.
+            if (typeof navigator.sendBeacon === 'function') {
+                try {
+                    const ok = navigator.sendBeacon(fullUrl);
+                    console.log('[RSVP] sendBeacon result:', ok);
+                    console.log('[RSVP] URL sent:', fullUrl);
+
+                    if (ok) {
+                        // Beacon принят браузером — считаем успехом.
+                        // Запрос идёт с keepalive:true, поэтому выполнится даже
+                        // если пользователь уйдёт со страницы.
+                        setTimeout(showSuccess, 600);
+                        return;
+                    }
+                    console.warn('[RSVP] sendBeacon returned false, falling back to iframe');
+                } catch (err) {
+                    console.warn('[RSVP] sendBeacon threw exception, falling back to iframe:', err);
+                }
+            } else {
+                console.log('[RSVP] sendBeacon not supported, using iframe');
             }
+
+            // === РЕЗЕРВНЫЙ КАНАЛ: iframe ===
+            submitViaIframe();
         });
 
-        // Резервный таймер на случай, если iframe не загрузится
-        setTimeout(() => {
-            if (isSubmitting) {
-                // Если за 10 секунд ответ не пришел, показываем ошибку или успех?
-                // Лучше показать успех, так как данные, скорее всего, ушли.
-                // Но для отладки можно показывать ошибку.
-                // Показываем успех, чтобы не пугать пользователей.
+        function submitViaIframe() {
+            const iframe = document.getElementById('hidden_iframe');
+            let settled = false;
+
+            const onLoad = () => {
+                if (settled) return;
+                settled = true;
+                iframe.removeEventListener('load', onLoad);
+                console.log('[RSVP] iframe load event fired — server responded');
                 showSuccess();
-            }
-        }, 10000);
+            };
+
+            iframe.addEventListener('load', onLoad);
+
+            // Нативная отправка формы в iframe (GET)
+            form.submit();
+
+            // Тайм-аут БЕЗ автопоказа успеха — диагностический режим.
+            // Если сюда попадаем — значит сервер не ответил.
+            // Данные могут быть всё же доставлены, но проверить это нужно в GAS Executions.
+            setTimeout(() => {
+                if (settled) return;
+                settled = true;
+                iframe.removeEventListener('load', onLoad);
+                console.error('[RSVP] iframe timeout — no response from server within 20s');
+                showNetworkError('iframe timeout');
+            }, 20000);
+        }
 
         document.getElementById('userName').addEventListener('input', function () {
             if (this.value.trim() !== '') {
