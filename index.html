@@ -51,11 +51,12 @@
             padding: 4px 12px; border-radius: 4px; text-transform: uppercase;
         }
 
-        .lang-switch { display: flex; gap: 10px; }
+        .lang-switch { display: flex; gap: 8px; }
         .lang-btn {
             background: none; border: 1px solid var(--gold); color: var(--gold);
             padding: 5px 10px; border-radius: 4px; cursor: pointer;
             font-family: var(--font-sans); font-weight: 600; transition: var(--transition);
+            font-size: 0.9rem;
         }
         .lang-btn.active, .lang-btn:hover { background-color: var(--gold); color: var(--black); }
 
@@ -195,6 +196,8 @@
             .hero h1 { font-size: 2rem; }
             .radio-group { grid-template-columns: 1fr; }
             .rsvp-section { padding: 30px 20px; }
+            .lang-switch { gap: 6px; }
+            .lang-btn { padding: 5px 8px; font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -205,6 +208,7 @@
         <div class="lang-switch">
             <button class="lang-btn active" data-lang="ru" aria-label="Switch to Russian">RU</button>
             <button class="lang-btn" data-lang="en" aria-label="Switch to English">EN</button>
+            <button class="lang-btn" data-lang="zh" aria-label="切换至中文">中文</button>
         </div>
     </header>
 
@@ -345,6 +349,32 @@
                 error_attendance: "Please select an answer.",
                 error_network: "Could not send your response. Please check your connection and try again.",
                 success: "Thank you! Your response has been recorded."
+            },
+            zh: {
+                title: "The Great Midea Corporate Event",
+                subtitle: "新办公室暨 2027 新年庆典",
+                date_label: "日期",
+                date_value: "2026 年 12 月 21 日",
+                time_label: "时间",
+                time_value: "17:00–21:00",
+                venue_label: "活动地点",
+                venue_value: "集合地点：莫斯科，基辅地铁站，“乌克兰酒店”码头，Radisson 游船",
+                map_btn: "在 Yandex 地图中打开",
+                dress_label: "着装要求",
+                dress_value: "Great Gatsby Dress Code",
+                warning: "重要提示：游船将于 17:00 准时从码头出发。请提前抵达——登船将提前开始，出发后将无法登船。",
+                description: "诚邀您出席 The Great Midea Corporate Event 企业活动，活动将于 2026 年 12 月 21 日举行。\n这一天将迎来两大重要时刻：乔迁新办公室，以及庆祝 2027 新年。新办公室、新年、新篇章！\n当晚主题为爵士乐与《了不起的盖茨比》。您将沉浸于 Art Deco 与《了不起的盖茨比》的美学氛围之中：现场爵士乐、黄金时代的优雅气息，以及与同事共同庆祝这一重要里程碑的绝佳契机——就在 Radisson 游船之上。",
+                name_label: "您的姓名？",
+                name_placeholder: "请填写姓名",
+                attendance_label: "您是否将出席 The Great Midea Corporate Event 企业活动？",
+                yes: "是",
+                no: "否",
+                submit_btn: "提交回复",
+                sending: "发送中…",
+                error_name: "请填写姓名。",
+                error_attendance: "请选择答案。",
+                error_network: "发送失败。请检查网络连接后重试。",
+                success: "感谢！您的回复已记录。"
             }
         };
 
@@ -352,8 +382,9 @@
         let isSubmitting = false;
 
         function setLanguage(lang) {
+            if (!translations[lang]) return;
             currentLang = lang;
-            document.documentElement.lang = lang;
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -446,7 +477,6 @@
             document.getElementById('langInput').value = currentLang;
             document.getElementById('timestampInput').value = timestamp;
 
-            // Формируем URL со всеми параметрами
             const params = new URLSearchParams();
             params.set('name', nameInput.value.trim());
             params.set('attendance', attendanceValue);
@@ -466,9 +496,6 @@
                     console.log('[RSVP] URL sent:', fullUrl);
 
                     if (ok) {
-                        // Beacon принят браузером — считаем успехом.
-                        // Запрос идёт с keepalive:true, поэтому выполнится даже
-                        // если пользователь уйдёт со страницы.
                         setTimeout(showSuccess, 600);
                         return;
                     }
@@ -497,13 +524,8 @@
             };
 
             iframe.addEventListener('load', onLoad);
-
-            // Нативная отправка формы в iframe (GET)
             form.submit();
 
-            // Тайм-аут БЕЗ автопоказа успеха — диагностический режим.
-            // Если сюда попадаем — значит сервер не ответил.
-            // Данные могут быть всё же доставлены, но проверить это нужно в GAS Executions.
             setTimeout(() => {
                 if (settled) return;
                 settled = true;
