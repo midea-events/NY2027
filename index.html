@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Great Midea Corporate Event</title>
     <style>
+        /* === ПАЛИТРА: СТРОГИЙ ЧЁРНЫЙ + ЗОЛОТО (GATSBY) === */
         :root {
             --bg-color: #050505;
             --bg-light: #151515;
@@ -14,6 +15,7 @@
             --white: #f5f5f5;
             --black: #000000;
             --error-red: #e74c3c;
+            
             --text-color: #f5f5f5;
             --font-serif: "Georgia", "Times New Roman", serif;
             --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -21,8 +23,13 @@
             --transition: 0.3s ease;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
+        /* === БАЗОВЫЕ НАСТРОЙКИ === */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -31,58 +38,139 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image: radial-gradient(circle at top center, var(--bg-light) 0%, var(--bg-color) 70%);
+            background-image: 
+                radial-gradient(circle at top center, var(--bg-light) 0%, var(--bg-color) 70%);
             background-attachment: fixed;
         }
 
-        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-        *:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+        }
 
+        *:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        /* === ШАПКА === */
         header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            background-color: rgba(5, 5, 5, 0.9); position: sticky; top: 0;
-            z-index: 100; backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            background-color: rgba(5, 5, 5, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
+        /* Первоначальный логотип (Черным цветом на белой плашке для видимости) */
         .brand {
-            font-family: var(--font-sans); font-size: 1.5rem; font-weight: 700;
-            letter-spacing: 2px; color: var(--black); background-color: var(--white);
-            padding: 4px 12px; border-radius: 4px; text-transform: uppercase;
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--black);
+            background-color: var(--white);
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
         }
 
-        .lang-switch { display: flex; gap: 8px; }
+        .lang-switch {
+            display: flex;
+            gap: 10px;
+        }
+
         .lang-btn {
-            background: none; border: 1px solid var(--gold); color: var(--gold);
-            padding: 5px 10px; border-radius: 4px; cursor: pointer;
-            font-family: var(--font-sans); font-weight: 600; transition: var(--transition);
-            font-size: 0.9rem;
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            transition: var(--transition);
         }
-        .lang-btn.active, .lang-btn:hover { background-color: var(--gold); color: var(--black); }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; flex-grow: 1; }
+        .lang-btn.active, .lang-btn:hover {
+            background-color: var(--gold);
+            color: var(--black);
+        }
 
-        .hero { text-align: center; margin-bottom: 50px; }
+        /* === КОНТЕЙНЕР === */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex-grow: 1;
+        }
+
+        /* === HERO СЕКЦИЯ === */
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
         .hero h1 {
-            font-family: var(--font-serif); font-size: 2.8rem; color: var(--gold);
-            margin-bottom: 10px; line-height: 1.2; font-weight: normal;
-            text-transform: uppercase; letter-spacing: 3px;
-        }
-        .hero p.subtitle {
-            font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 35px;
-        }
-        .hero img {
-            width: 100%; max-width: 600px; border-radius: var(--radius);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); margin: 0 auto; display: block;
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            line-height: 1.2;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
 
-        .event-details-wrapper { display: flex; gap: 30px; margin-bottom: 30px; align-items: stretch; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1.5; }
-        .event-image-container { flex: 1; display: flex; min-width: 250px; }
+        .hero p.subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+        }
+
+        .hero img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* === ИНФО БЛОК С КАРТИНКОЙ === */
+        .event-details-wrapper {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            align-items: stretch;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1.5;
+        }
+
+        .event-image-container {
+            flex: 1;
+            display: flex;
+            min-width: 250px;
+        }
+
+        /* Исправленная картинка: больше не обрезается на мобильных */
         .event-side-image {
-            width: 100%; height: auto; object-fit: contain; border-radius: var(--radius);
+            width: 100%;
+            height: auto; 
+            object-fit: contain; 
+            border-radius: var(--radius);
             border: 1px solid rgba(212, 175, 55, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
@@ -90,114 +178,239 @@
         .info-card {
             background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 20px; border-radius: var(--radius); text-align: center;
-            display: flex; flex-direction: column; justify-content: center;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
+
         .info-card h3 {
-            font-family: var(--font-serif); color: var(--gold);
-            font-size: 1.1rem; margin-bottom: 10px; letter-spacing: 1px;
+            font-family: var(--font-serif);
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
-        .info-card p { font-size: 1rem; margin-bottom: 10px; }
+
+        .info-card p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
 
         .map-btn {
-            display: inline-block; background-color: transparent; color: var(--gold);
-            border: 1px solid var(--gold); padding: 8px 15px; text-decoration: none;
-            border-radius: 4px; font-size: 0.9rem; transition: var(--transition); margin-top: auto;
+            display: inline-block;
+            background-color: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            margin-top: auto;
         }
-        .map-btn:hover { background-color: rgba(212, 175, 55, 0.1); }
 
+        .map-btn:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        /* === ПРЕДУПРЕЖДЕНИЕ И ОПИСАНИЕ === */
         .warning-box {
             background-color: rgba(212, 175, 55, 0.05);
-            border-left: 4px solid var(--gold); padding: 15px 20px;
-            margin-bottom: 30px; color: var(--gold-light);
+            border-left: 4px solid var(--gold);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            color: var(--gold-light);
         }
 
         .description {
-            font-size: 1.1rem; text-align: justify; margin-bottom: 50px;
-            color: rgba(255, 255, 255, 0.8); white-space: pre-line;
+            font-size: 1.1rem;
+            text-align: justify;
+            margin-bottom: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            white-space: pre-line;
         }
 
+        /* === ФОРМА RSVP === */
         .rsvp-section {
             background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 40px; border-radius: var(--radius); position: relative;
+            padding: 40px;
+            border-radius: var(--radius);
+            position: relative;
         }
+
         .rsvp-section::before, .rsvp-section::after {
-            content: ''; position: absolute; width: 30px; height: 30px; border: 1px solid var(--gold);
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--gold);
         }
         .rsvp-section::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
         .rsvp-section::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
 
-        .form-group { margin-bottom: 30px; }
-        .form-label {
-            display: block; font-family: var(--font-serif); font-size: 1.2rem;
-            color: var(--gold); margin-bottom: 10px; letter-spacing: 1px;
+        .form-group {
+            margin-bottom: 30px;
         }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
         .form-input {
-            width: 100%; padding: 15px; background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px;
-            color: var(--white); font-size: 1rem; font-family: var(--font-sans);
+            width: 100%;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: var(--font-sans);
             transition: var(--transition);
         }
-        .form-input:focus { border-color: var(--gold); background-color: rgba(255, 255, 255, 0.08); }
-        .form-input::placeholder { color: rgba(255, 255, 255, 0.3); }
 
-        .radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .radio-label { display: block; position: relative; cursor: pointer; }
-        .radio-label input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .form-input:focus {
+            border-color: var(--gold);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Кнопки-радио */
+        .radio-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .radio-label {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
         .radio-button {
-            display: flex; align-items: center; justify-content: center; padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
             background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px;
-            font-size: 1.1rem; font-weight: 600; transition: var(--transition);
-        }
-        .radio-label input:checked ~ .radio-button {
-            background-color: var(--gold); color: var(--black); border-color: var(--gold);
-        }
-        .radio-label input:focus-visible ~ .radio-button {
-            outline: 3px solid var(--white); outline-offset: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: var(--transition);
         }
 
-        .error-msg, .network-error-msg {
-            color: var(--error-red); font-size: 0.9rem; margin-top: 5px; display: none;
+        .radio-label input:checked ~ .radio-button {
+            background-color: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
         }
-        .has-error .form-input, .has-error .radio-button { border-color: var(--error-red); }
-        .has-error .error-msg { display: block; }
+
+        .radio-label input:focus-visible ~ .radio-button {
+            outline: 3px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        /* Ошибки валидации и сети */
+        .error-msg, .network-error-msg {
+            color: var(--error-red);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .has-error .form-input, .has-error .radio-button {
+            border-color: var(--error-red);
+        }
+        
+        .has-error .error-msg {
+            display: block;
+        }
+
         .network-error-msg {
-            text-align: center; font-size: 1rem; margin-top: 15px; font-weight: bold;
+            text-align: center;
+            font-size: 1rem;
+            margin-top: 15px;
+            font-weight: bold;
         }
 
         .submit-btn {
-            width: 100%; background-color: var(--gold); color: var(--black);
-            border: none; padding: 18px; font-size: 1.2rem; font-weight: 700;
-            font-family: var(--font-serif); border-radius: 4px; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px; transition: var(--transition);
+            width: 100%;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: var(--font-serif);
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
         }
-        .submit-btn:hover:not(:disabled) { background-color: var(--gold-hover); transform: translateY(-2px); }
-        .submit-btn:active:not(:disabled) { transform: translateY(0); }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: var(--gold-hover);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
         .submit-btn:disabled {
-            background-color: #6a571c; color: rgba(0, 0, 0, 0.6);
-            cursor: not-allowed; transform: none;
+            background-color: #6a571c;
+            color: rgba(0, 0, 0, 0.6);
+            cursor: not-allowed;
+            transform: none;
         }
 
+        /* === СООБЩЕНИЕ ОБ УСПЕХЕ === */
         .success-box {
-            display: none; text-align: center; background-color: rgba(212, 175, 55, 0.05);
-            border: 1px solid var(--gold); padding: 40px; border-radius: var(--radius);
-        }
-        .success-box h2 {
-            font-family: var(--font-serif); color: var(--gold);
-            margin-bottom: 10px; letter-spacing: 1px;
+            display: none;
+            text-align: center;
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold);
+            padding: 40px;
+            border-radius: var(--radius);
         }
 
+        .success-box h2 {
+            font-family: var(--font-serif);
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* === АДАПТИВНОСТЬ === */
         @media (max-width: 768px) {
             .event-details-wrapper { flex-direction: column; }
             .info-grid { grid-template-columns: 1fr; }
-            .event-image-container { height: auto; }
+            .event-image-container { height: auto; } /* Убрана жесткая высота, чтобы не резать картинку */
             .hero h1 { font-size: 2rem; }
             .radio-group { grid-template-columns: 1fr; }
             .rsvp-section { padding: 30px 20px; }
-            .lang-switch { gap: 6px; }
-            .lang-btn { padding: 5px 8px; font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -254,19 +467,17 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="hidden"></iframe>
-
-                <form id="rsvpForm"
-                      action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec"
-                      method="POST"
-                      target="hidden_iframe"
-                      novalidate>
+                <!-- Невидимый iframe для гарантированной HTML-отправки на мобильных -->
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){showSuccess();}"></iframe>
+                
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="GET" target="hidden_iframe" novalidate>
+                    <!-- Скрытые технические поля для передачи в Google -->
                     <input type="hidden" name="language" id="langInput" value="ru">
                     <input type="hidden" name="t" id="timestampInput" value="">
-
+                    
                     <div class="form-group" id="nameGroup">
                         <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
-                        <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
+                        <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" required>
                         <div class="error-msg" data-i18n="error_name">Пожалуйста, укажите имя.</div>
                     </div>
 
@@ -358,7 +569,7 @@
                 time_label: "时间",
                 time_value: "17:00–21:00",
                 venue_label: "活动地点",
-                venue_value: "集合地点：莫斯科，基辅地铁站，“乌克兰酒店”码头，Radisson 游船",
+                venue_value: "集合地点：莫斯科，基辅地铁站，乌克兰酒店码头，Radisson 游船",
                 map_btn: "在 Yandex 地图中打开",
                 dress_label: "着装要求",
                 dress_value: "Great Gatsby Dress Code",
@@ -379,21 +590,24 @@
         };
 
         let currentLang = 'ru';
-        let isSubmitting = false;
+        let submitted = false;
 
         function setLanguage(lang) {
-            if (!translations[lang]) return;
             currentLang = lang;
-            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) el.textContent = translations[lang][key];
+            document.documentElement.lang = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
             });
 
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[lang][key]) el.placeholder = translations[lang][key];
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
             });
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -401,16 +615,14 @@
             });
 
             const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn.disabled && isSubmitting) {
+            if (submitBtn.disabled) {
                 submitBtn.textContent = translations[lang].sending;
-            } else {
-                submitBtn.textContent = translations[lang].submit_btn;
             }
         }
 
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                setLanguage(e.currentTarget.getAttribute('data-lang'));
+                setLanguage(e.target.getAttribute('data-lang'));
                 document.getElementById('nameGroup').classList.remove('has-error');
                 document.getElementById('attendanceGroup').classList.remove('has-error');
             });
@@ -421,27 +633,15 @@
             document.getElementById('successBox').style.display = 'block';
         }
 
-        function showNetworkError(reason) {
-            const submitBtn = document.getElementById('submitBtn');
-            const networkError = document.getElementById('networkError');
-            isSubmitting = false;
-            submitBtn.disabled = false;
-            submitBtn.textContent = translations[currentLang].submit_btn;
-            networkError.style.display = 'block';
-            console.error('[RSVP] Sending failed:', reason || 'unknown');
-        }
-
         const form = document.getElementById('rsvpForm');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (isSubmitting) return;
-
+        
+        form.addEventListener('submit', (e) => {
             const nameInput = document.getElementById('userName');
             const attendanceRadios = document.getElementsByName('attendance');
+            
             const nameGroup = document.getElementById('nameGroup');
             const attendanceGroup = document.getElementById('attendanceGroup');
-
+            
             let isValid = true;
             let attendanceValue = null;
 
@@ -452,92 +652,51 @@
                 nameGroup.classList.remove('has-error');
             }
 
+            let radioSelected = false;
             for (const radio of attendanceRadios) {
-                if (radio.checked) { attendanceValue = radio.value; break; }
+                if (radio.checked) {
+                    radioSelected = true;
+                    attendanceValue = radio.value;
+                    break;
+                }
             }
-
-            if (!attendanceValue) {
+            
+            if (!radioSelected) {
                 attendanceGroup.classList.add('has-error');
                 isValid = false;
             } else {
                 attendanceGroup.classList.remove('has-error');
             }
 
-            if (!isValid) return;
-
-            const submitBtn = document.getElementById('submitBtn');
-            const networkError = document.getElementById('networkError');
-
-            isSubmitting = true;
-            submitBtn.disabled = true;
-            submitBtn.textContent = translations[currentLang].sending;
-            networkError.style.display = 'none';
-
-            const timestamp = String(Date.now());
-            document.getElementById('langInput').value = currentLang;
-            document.getElementById('timestampInput').value = timestamp;
-
-            const baseUrl = form.getAttribute('action');
-
-            // === ОСНОВНОЙ КАНАЛ: POST через fetch + no-cors ===
-            // При POST GAS вызывает doPost ДО редиректа на script.googleusercontent.com,
-            // поэтому данные пишутся в таблицу независимо от cookie-политики браузера.
-            // Работает на PC, iOS Safari, Chrome Android.
-            try {
-                await fetch(baseUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    cache: 'no-store',
-                    body: new URLSearchParams({
-                        name: nameInput.value.trim(),
-                        attendance: attendanceValue,
-                        language: currentLang,
-                        t: timestamp
-                    })
-                });
-                console.log('[RSVP] POST sent');
-                setTimeout(showSuccess, 600);
+            if (!isValid) {
+                e.preventDefault(); // Останавливаем отправку, если есть ошибки
                 return;
-            } catch (err) {
-                console.warn('[RSVP] fetch POST failed, falling back to iframe:', err);
             }
 
-            // === РЕЗЕРВНЫЙ КАНАЛ: iframe POST ===
-            submitViaIframe();
+            // Если все верно, нативная HTML-форма отправляет данные
+            document.getElementById('langInput').value = currentLang;
+            document.getElementById('timestampInput').value = new Date().getTime();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = translations[currentLang].sending;
+            
+            submitted = true;
+            
+            // Запасной таймер на случай, если событие onload у iframe не сработает визуально
+            setTimeout(() => {
+                if (submitted) showSuccess();
+            }, 1500);
         });
 
-        function submitViaIframe() {
-            const iframe = document.getElementById('hidden_iframe');
-            let settled = false;
-
-            const onLoad = () => {
-                if (settled) return;
-                settled = true;
-                iframe.removeEventListener('load', onLoad);
-                console.log('[RSVP] iframe load fired — server responded');
-                showSuccess();
-            };
-
-            iframe.addEventListener('load', onLoad);
-            form.submit();
-
-            setTimeout(() => {
-                if (settled) return;
-                settled = true;
-                iframe.removeEventListener('load', onLoad);
-                console.error('[RSVP] iframe timeout — no response within 20s');
-                showNetworkError('iframe timeout');
-            }, 20000);
-        }
-
-        document.getElementById('userName').addEventListener('input', function () {
+        document.getElementById('userName').addEventListener('input', function() {
             if (this.value.trim() !== '') {
                 document.getElementById('nameGroup').classList.remove('has-error');
             }
         });
-
+        
         document.querySelectorAll('input[name="attendance"]').forEach(radio => {
-            radio.addEventListener('change', function () {
+            radio.addEventListener('change', function() {
                 document.getElementById('attendanceGroup').classList.remove('has-error');
             });
         });
