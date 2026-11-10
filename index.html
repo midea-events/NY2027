@@ -465,7 +465,10 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="GET" novalidate>
+                <!-- Скрытый iframe — принимает ответ от Google Apps Script -->
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="onIframeLoad()"></iframe>
+
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="GET" target="hidden_iframe" novalidate>
                     <div class="form-group" id="nameGroup">
                         <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
                         <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
@@ -487,6 +490,9 @@
                         <div class="error-msg" data-i18n="error_attendance">Пожалуйста, выберите вариант ответа.</div>
                     </div>
 
+                    <input type="hidden" name="language" id="langInput" value="ru">
+                    <input type="hidden" name="t" id="timestampInput" value="">
+
                     <button type="submit" class="submit-btn" id="submitBtn" data-i18n="submit_btn">Отправить ответ</button>
                     <div id="networkError" class="network-error-msg" role="alert" aria-live="polite" data-i18n="error_network">Не удалось отправить ответ. Проверьте соединение и попробуйте снова.</div>
                 </form>
@@ -499,8 +505,6 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec";
-
         const translations = {
             ru: {
                 title: "The Great Midea Corporate Event",
@@ -583,11 +587,12 @@
         };
 
         let currentLang = 'ru';
-        let isSubmitting = false;
+        let submitted = false;
+        let submitTimeout = null;
 
+        const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const networkError = document.getElementById('networkError');
-        const form = document.getElementById('rsvpForm');
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -611,11 +616,13 @@
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
 
-            if (submitBtn.disabled && isSubmitting) {
+            if (submitBtn.disabled) {
                 submitBtn.textContent = translations[lang].sending;
-            } else if (!isSubmitting) {
+            } else {
                 submitBtn.textContent = translations[lang].submit_btn;
             }
+
+            document.getElementById('langInput').value = lang;
         }
 
         document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -626,24 +633,27 @@
             });
         });
 
+        // Эта функция вызывается, когда iframe загружается после отправки формы
+        function onIframeLoad() {
+            if (submitted) {
+                clearTimeout(submitTimeout);
+                showSuccess();
+            }
+        }
+
         function showSuccess() {
-            isSubmitting = false;
+            submitted = false;
             document.getElementById('rsvpSection').style.display = 'none';
             document.getElementById('successBox').style.display = 'block';
         }
 
         form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            if (isSubmitting) return;
-
             const nameInput = document.getElementById('userName');
             const nameGroup = document.getElementById('nameGroup');
             const attendanceGroup = document.getElementById('attendanceGroup');
             const attendanceRadios = document.getElementsByName('attendance');
 
             let isValid = true;
-            let attendanceValue = null;
 
             if (nameInput.value.trim() === '') {
                 nameGroup.classList.add('has-error');
@@ -652,51 +662,47 @@
                 nameGroup.classList.remove('has-error');
             }
 
+            let radioSelected = false;
             for (const radio of attendanceRadios) {
                 if (radio.checked) {
-                    attendanceValue = radio.value;
+                    radioSelected = true;
                     break;
                 }
             }
 
-            if (!attendanceValue) {
+            if (!radioSelected) {
                 attendanceGroup.classList.add('has-error');
                 isValid = false;
             } else {
                 attendanceGroup.classList.remove('has-error');
             }
 
-            if (!isValid) return;
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
 
-            networkError.style.display = 'none';
-            isSubmitting = true;
+            // Подготовка к отправке
+            document.getElementById('langInput').value = currentLang;
+            document.getElementById('timestampInput').value = new Date().getTime();
+
             submitBtn.disabled = true;
             submitBtn.textContent = translations[currentLang].sending;
+            networkError.style.display = 'none';
+            submitted = true;
 
-            const params = new URLSearchParams({
-                name: nameInput.value.trim(),
-                attendance: attendanceValue,
-                language: currentLang,
-                t: String(Date.now())
-            });
-
-            // Отправка через fetch в режиме no-cors:
-            // работает одинаково на desktop и mobile, не зависит от iframe
-            fetch(SCRIPT_URL + '?' + params.toString(), {
-                method: 'GET',
-                mode: 'no-cors',
-                cache: 'no-store',
-                redirect: 'follow'
-            })
-                .then(() => {
-                    showSuccess();
-                })
-                .catch(() => {
-                    isSubmitting = false;
+            // Если iframe по какой-то причине не загрузится, показать ошибку через 10 секунд
+            submitTimeout = setTimeout(() => {
+                if (submitted) {
+                    submitted = false;
                     submitBtn.disabled = false;
                     submitBtn.textContent = translations[currentLang].submit_btn;
                     networkError.style.display = 'block';
-                });
+                }
+            }, 10000);
+
+            // Нативная отправка формы произойдет автоматически благодаря target="hidden_iframe"
+            // Мы не вызываем e.preventDefault(), поэтому форма уходит в iframe
         });
 
         document.getElementById('userName').addEventListener('input', function () {
