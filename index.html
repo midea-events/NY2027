@@ -44,7 +44,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * { transition: none !important; }
+            * { transition: none !important; animation: none !important; }
         }
 
         *:focus-visible {
@@ -401,6 +401,24 @@
             letter-spacing: 1px;
         }
 
+        /* Стили для картинки в блоке успеха */
+        .success-image {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: var(--radius);
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+            margin: 0 auto 25px auto;
+            display: block;
+            animation: fadeInImage 1s ease-out forwards;
+        }
+
+        @keyframes fadeInImage {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         /* === АДАПТИВНОСТЬ === */
         @media (max-width: 768px) {
             .event-details-wrapper { flex-direction: column; }
@@ -409,6 +427,7 @@
             .hero h1 { font-size: 2rem; }
             .radio-group { grid-template-columns: 1fr; }
             .rsvp-section { padding: 30px 20px; }
+            .success-box { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -499,6 +518,8 @@
             </section>
 
             <section class="success-box" id="successBox" role="status" aria-live="polite">
+                <!-- ДОБАВЛЕНА КАРТИНКА СЮДА -->
+                <img src="gatsby-success.jpg" alt="Jay Gatsby" class="success-image" onerror="this.style.display='none'" />
                 <h2 data-i18n="success">Спасибо! Ваш ответ учтён.</h2>
             </section>
         </main>
@@ -633,7 +654,6 @@
             });
         });
 
-        // Эта функция вызывается, когда iframe загружается после отправки формы
         function onIframeLoad() {
             if (submitted) {
                 clearTimeout(submitTimeout);
@@ -682,7 +702,6 @@
                 return;
             }
 
-            // Подготовка к отправке
             document.getElementById('langInput').value = currentLang;
             document.getElementById('timestampInput').value = new Date().getTime();
 
@@ -691,7 +710,6 @@
             networkError.style.display = 'none';
             submitted = true;
 
-            // Если iframe по какой-то причине не загрузится, показать ошибку через 10 секунд
             submitTimeout = setTimeout(() => {
                 if (submitted) {
                     submitted = false;
@@ -700,9 +718,6 @@
                     networkError.style.display = 'block';
                 }
             }, 10000);
-
-            // Нативная отправка формы произойдет автоматически благодаря target="hidden_iframe"
-            // Мы не вызываем e.preventDefault(), поэтому форма уходит в iframe
         });
 
         document.getElementById('userName').addEventListener('input', function () {
