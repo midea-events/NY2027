@@ -258,7 +258,7 @@
 
                 <form id="rsvpForm"
                       action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec"
-                      method="GET"
+                      method="POST"
                       target="hidden_iframe"
                       novalidate>
                     <input type="hidden" name="language" id="langInput" value="ru">
@@ -433,7 +433,7 @@
 
         const form = document.getElementById('rsvpForm');
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (isSubmitting) return;
 
@@ -477,37 +477,32 @@
             document.getElementById('langInput').value = currentLang;
             document.getElementById('timestampInput').value = timestamp;
 
-            const params = new URLSearchParams();
-            params.set('name', nameInput.value.trim());
-            params.set('attendance', attendanceValue);
-            params.set('language', currentLang);
-            params.set('t', timestamp);
-
             const baseUrl = form.getAttribute('action');
-            const fullUrl = baseUrl + '?' + params.toString();
 
-            // === ОСНОВНОЙ КАНАЛ: navigator.sendBeacon ===
-            // sendBeacon(url) без тела → GET-запрос по спецификации Beacon API,
-            // что совместимо с doGet в Google Apps Script.
-            if (typeof navigator.sendBeacon === 'function') {
-                try {
-                    const ok = navigator.sendBeacon(fullUrl);
-                    console.log('[RSVP] sendBeacon result:', ok);
-                    console.log('[RSVP] URL sent:', fullUrl);
-
-                    if (ok) {
-                        setTimeout(showSuccess, 600);
-                        return;
-                    }
-                    console.warn('[RSVP] sendBeacon returned false, falling back to iframe');
-                } catch (err) {
-                    console.warn('[RSVP] sendBeacon threw exception, falling back to iframe:', err);
-                }
-            } else {
-                console.log('[RSVP] sendBeacon not supported, using iframe');
+            // === ОСНОВНОЙ КАНАЛ: POST через fetch + no-cors ===
+            // При POST GAS вызывает doPost ДО редиректа на script.googleusercontent.com,
+            // поэтому данные пишутся в таблицу независимо от cookie-политики браузера.
+            // Работает на PC, iOS Safari, Chrome Android.
+            try {
+                await fetch(baseUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    body: new URLSearchParams({
+                        name: nameInput.value.trim(),
+                        attendance: attendanceValue,
+                        language: currentLang,
+                        t: timestamp
+                    })
+                });
+                console.log('[RSVP] POST sent');
+                setTimeout(showSuccess, 600);
+                return;
+            } catch (err) {
+                console.warn('[RSVP] fetch POST failed, falling back to iframe:', err);
             }
 
-            // === РЕЗЕРВНЫЙ КАНАЛ: iframe ===
+            // === РЕЗЕРВНЫЙ КАНАЛ: iframe POST ===
             submitViaIframe();
         });
 
@@ -519,7 +514,7 @@
                 if (settled) return;
                 settled = true;
                 iframe.removeEventListener('load', onLoad);
-                console.log('[RSVP] iframe load event fired — server responded');
+                console.log('[RSVP] iframe load fired — server responded');
                 showSuccess();
             };
 
@@ -530,7 +525,7 @@
                 if (settled) return;
                 settled = true;
                 iframe.removeEventListener('load', onLoad);
-                console.error('[RSVP] iframe timeout — no response from server within 20s');
+                console.error('[RSVP] iframe timeout — no response within 20s');
                 showNetworkError('iframe timeout');
             }, 20000);
         }
