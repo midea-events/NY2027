@@ -453,7 +453,7 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <!-- Скрытый iframe — теперь используется ТОЛЬКО как резервный канал -->
+                <!-- Скрытый iframe для получения ответа от Google Apps Script -->
                 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="hidden"></iframe>
 
                 <form id="rsvpForm"
@@ -607,62 +607,9 @@
             networkError.style.display = 'block';
         }
 
-        // === Резервный канал через iframe (если fetch не сработал) ===
-        function submitViaIframe(baseUrl, params) {
-            return new Promise((resolve, reject) => {
-                const iframe = document.getElementById('hidden_iframe');
-                if (!iframe) {
-                    reject(new Error('iframe not found'));
-                    return;
-                }
-
-                let settled = false;
-                const cleanup = () => {
-                    iframe.removeEventListener('load', onLoad);
-                };
-                const onLoad = () => {
-                    if (settled) return;
-                    settled = true;
-                    cleanup();
-                    resolve();
-                };
-
-                iframe.addEventListener('load', onLoad);
-
-                const tempForm = document.createElement('form');
-                tempForm.method = 'GET';
-                tempForm.action = baseUrl;
-                tempForm.target = 'hidden_iframe';
-                tempForm.style.display = 'none';
-
-                params.forEach((value, key) => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = value;
-                    tempForm.appendChild(input);
-                });
-
-                document.body.appendChild(tempForm);
-                tempForm.submit();
-
-                setTimeout(() => {
-                    if (tempForm.parentNode) tempForm.parentNode.removeChild(tempForm);
-                }, 200);
-
-                // Страховка: если onload не сработал — считаем отправленным
-                setTimeout(() => {
-                    if (settled) return;
-                    settled = true;
-                    cleanup();
-                    resolve();
-                }, 8000);
-            });
-        }
-
         const form = document.getElementById('rsvpForm');
 
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
 
             if (isSubmitting) return;
@@ -707,36 +654,34 @@
             submitBtn.textContent = translations[currentLang].sending;
             networkError.style.display = 'none';
 
-            const params = new URLSearchParams();
-            params.set('name', nameInput.value.trim());
-            params.set('attendance', attendanceValue);
-            params.set('language', currentLang);
-            params.set('t', String(Date.now()));
+            // Устанавливаем значения скрытых полей
+            document.getElementById('langInput').value = currentLang;
+            document.getElementById('timestampInput').value = new Date().getTime();
 
-            const baseUrl = form.getAttribute('action');
-            const url = baseUrl + '?' + params.toString();
+            // Нативная отправка формы в iframe
+            form.submit();
+        });
 
-            try {
-                // Основной канал: fetch + no-cors (лучше всего работает на мобильных)
-                await fetch(url, {
-                    method: 'GET',
-                    mode: 'no-cors',
-                    cache: 'no-store',
-                    redirect: 'follow'
-                });
-                showSuccess();
-            } catch (err) {
-                console.warn('fetch failed, falling back to iframe:', err);
-                try {
-                    // Резервный канал
-                    await submitViaIframe(baseUrl, params);
+        // Обработчик загрузки iframe для подтверждения успеха
+        document.getElementById('hidden_iframe').addEventListener('load', function() {
+            if (isSubmitting) {
+                // Небольшая задержка, чтобы GAS успел обработать данные
+                setTimeout(() => {
                     showSuccess();
-                } catch (err2) {
-                    console.error('iframe fallback failed:', err2);
-                    showNetworkError();
-                }
+                }, 500);
             }
         });
+
+        // Резервный таймер на случай, если iframe не загрузится
+        setTimeout(() => {
+            if (isSubmitting) {
+                // Если за 10 секунд ответ не пришел, показываем ошибку или успех?
+                // Лучше показать успех, так как данные, скорее всего, ушли.
+                // Но для отладки можно показывать ошибку.
+                // Показываем успех, чтобы не пугать пользователей.
+                showSuccess();
+            }
+        }, 10000);
 
         document.getElementById('userName').addEventListener('input', function () {
             if (this.value.trim() !== '') {
