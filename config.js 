@@ -1,0 +1,3 @@
+window.APP_CONFIG = {
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzWQBogJTObf5Tq-ZiBLzh09AYvj12NiaIX9ra7-uDmp26ajQ3OPadtSw8X4HYkkRUgGQ/exec"
+};
