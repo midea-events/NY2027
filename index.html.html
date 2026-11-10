@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Midea Corporate Event</title>
+    <style>
+        /* === ПАЛИТРА: СТРОГИЙ ЧЁРНЫЙ + ЗОЛОТО (GATSBY) === */
+        :root {
+            --bg-color: #050505;
+            --bg-light: #151515;
+            --gold: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-hover: #b5952f;
+            --white: #f5f5f5;
+            --black: #000000;
+            --error-red: #e74c3c;
+
+            --text-color: #f5f5f5;
+            --font-serif: "Georgia", "Times New Roman", serif;
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius: 8px;
+            --transition: 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                radial-gradient(circle at top center, var(--bg-light) 0%, var(--bg-color) 70%);
+            background-attachment: fixed;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+        }
+
+        *:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            background-color: rgba(5, 5, 5, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand {
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--black);
+            background-color: var(--white);
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .lang-btn.active, .lang-btn:hover {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex-grow: 1;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            line-height: 1.2;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .hero p.subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+        }
+
+        .hero img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            margin: 0 auto;
+            display: block;
+        }
+
+        .event-details-wrapper {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            align-items: stretch;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1.5;
+        }
+
+        .event-image-container {
+            flex: 1;
+            display: flex;
+            min-width: 250px;
+        }
+
+        .event-side-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: var(--radius);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-card h3 {
+            font-family: var(--font-serif);
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .info-card p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .map-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+
+        .map-btn:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .warning-box {
+            background-color: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid var(--gold);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            color: var(--gold-light);
+        }
+
+        .description {
+            font-size: 1.1rem;
+            text-align: justify;
+            margin-bottom: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            white-space: pre-line;
+        }
+
+        .rsvp-section {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 40px;
+            border-radius: var(--radius);
+            position: relative;
+        }
+
+        .rsvp-section::before, .rsvp-section::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--gold);
+        }
+        .rsvp-section::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .rsvp-section::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            border-color: var(--gold);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .radio-label {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .radio-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .radio-label input:checked ~ .radio-button {
+            background-color: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        .radio-label input:focus-visible ~ .radio-button {
+            outline: 3px solid var(--white);
+            outline-offset: 2px;
+        }
+
+        .error-msg, .network-error-msg {
+            color: var(--error-red);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .has-error .form-input, .has-error .radio-button {
+            border-color: var(--error-red);
+        }
+
+        .has-error .error-msg {
+            display: block;
+        }
+
+        .network-error-msg {
+            text-align: center;
+            font-size: 1rem;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: var(--font-serif);
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: var(--gold-hover);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background-color: #6a571c;
+            color: rgba(0, 0, 0, 0.6);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-box {
+            display: none;
+            text-align: center;
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--gold);
+            padding: 40px;
+            border-radius: var(--radius);
+        }
+
+        .success-box h2 {
+            font-family: var(--font-serif);
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .event-details-wrapper { flex-direction: column; }
+            .info-grid { grid-template-columns: 1fr; }
+            .event-image-container { height: auto; }
+            .hero h1 { font-size: 2rem; }
+            .radio-group { grid-template-columns: 1fr; }
+            .rsvp-section { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">Midea</div>
+        <div class="lang-switch">
+            <button class="lang-btn active" data-lang="ru" aria-label="Switch to Russian">RU</button>
+            <button class="lang-btn" data-lang="en" aria-label="Switch to English">EN</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <section class="hero">
+                <h1 data-i18n="title">The Great Midea Corporate Event</h1>
+                <p class="subtitle" data-i18n="subtitle">Новый офис и Новый 2027 год</p>
+                <img src="Midea标志迁移至船身.jpg" alt="The Great Midea Corporate Event" />
+            </section>
+
+            <div class="event-details-wrapper">
+                <section class="info-grid">
+                    <div class="info-card">
+                        <h3 data-i18n="date_label">Дата</h3>
+                        <p data-i18n="date_value">21 декабря 2026 г.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3 data-i18n="time_label">Время</h3>
+                        <p data-i18n="time_value">17:00–21:00</p>
+                    </div>
+                    <div class="info-card">
+                        <h3 data-i18n="dress_label">Дресс-код</h3>
+                        <p data-i18n="dress_value">Great Gatsby Dress Code</p>
+                    </div>
+                    <div class="info-card">
+                        <h3 data-i18n="venue_label">Место проведения</h3>
+                        <p data-i18n="venue_value">Точка сбора: г. Москва, м. Киевская, причал «Гостиница Украина», Теплоход Radisson</p>
+                        <a href="https://yandex.ru/maps/org/prichal_gostinitsa_ukraina/169313831025/?indoorLevel=1&ll=37.569244%2C55.750711&z=16.94" target="_blank" rel="noopener noreferrer" class="map-btn" data-i18n="map_btn">Открыть на Яндекс Картах</a>
+                    </div>
+                </section>
+                <div class="event-image-container">
+                    <img src="GreatGatsby_dresscode.jpg" alt="Great Gatsby Dress Code" class="event-side-image" onerror="this.style.display='none'" />
+                </div>
+            </div>
+
+            <div class="warning-box" data-i18n="warning">
+                Важно: теплоход отходит от причала ровно в 17:00. Пожалуйста, приезжайте заблаговременно — посадка начинается заранее, и присоединиться к борту после отправления не получится.
+            </div>
+
+            <p class="description" data-i18n="description">Приглашаем вас на корпоративное мероприятие The Great Midea Corporate Event, которое состоится 21 декабря 2026 года.
+Этот день посвящён двум большим событиям: переезду в новый офис и празднованию Нового 2027 года. Новый офис, Новый Год, Новый этап!
+Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
+
+            <section class="rsvp-section" id="rsvpSection">
+                <!-- Скрытый iframe — теперь используется ТОЛЬКО как резервный канал -->
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="hidden"></iframe>
+
+                <form id="rsvpForm"
+                      action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec"
+                      method="GET"
+                      target="hidden_iframe"
+                      novalidate>
+                    <input type="hidden" name="language" id="langInput" value="ru">
+                    <input type="hidden" name="t" id="timestampInput" value="">
+
+                    <div class="form-group" id="nameGroup">
+                        <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
+                        <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
+                        <div class="error-msg" data-i18n="error_name">Пожалуйста, укажите имя.</div>
+                    </div>
+
+                    <div class="form-group" id="attendanceGroup">
+                        <label class="form-label" data-i18n="attendance_label">Вы присоединитесь к корпоративному мероприятию The Great Midea Corporate Event?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="yes" required>
+                                <span class="radio-button" data-i18n="yes">Да</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="no" required>
+                                <span class="radio-button" data-i18n="no">Нет</span>
+                            </label>
+                        </div>
+                        <div class="error-msg" data-i18n="error_attendance">Пожалуйста, выберите вариант ответа.</div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn" data-i18n="submit_btn">Отправить ответ</button>
+                    <div id="networkError" class="network-error-msg" data-i18n="error_network">Не удалось отправить ответ. Проверьте соединение и попробуйте снова.</div>
+                </form>
+            </section>
+
+            <section class="success-box" id="successBox">
+                <h2 data-i18n="success">Спасибо! Ваш ответ учтён.</h2>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const translations = {
+            ru: {
+                title: "The Great Midea Corporate Event",
+                subtitle: "Новый офис и Новый 2027 год",
+                date_label: "Дата",
+                date_value: "21 декабря 2026 г.",
+                time_label: "Время",
+                time_value: "17:00–21:00",
+                venue_label: "Место проведения",
+                venue_value: "Точка сбора: г. Москва, м. Киевская, причал «Гостиница Украина», Теплоход Radisson",
+                map_btn: "Открыть на Яндекс Картах",
+                dress_label: "Дресс-код",
+                dress_value: "Great Gatsby Dress Code",
+                warning: "Важно: теплоход отходит от причала ровно в 17:00. Пожалуйста, приезжайте заблаговременно — посадка начинается заранее, и присоединиться к борту после отправления не получится.",
+                description: "Приглашаем вас на корпоративное мероприятие The Great Midea Corporate Event, которое состоится 21 декабря 2026 года.\nЭтот день посвящён двум большим событиям: переезду в новый офис и празднованию Нового 2027 года. Новый офис, Новый Год, Новый этап!\nТематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.",
+                name_label: "Как вас зовут?",
+                name_placeholder: "Укажите имя и фамилию",
+                attendance_label: "Вы присоединитесь к корпоративному мероприятию The Great Midea Corporate Event?",
+                yes: "Да",
+                no: "Нет",
+                submit_btn: "Отправить ответ",
+                sending: "Отправка…",
+                error_name: "Пожалуйста, укажите имя.",
+                error_attendance: "Пожалуйста, выберите вариант ответа.",
+                error_network: "Не удалось отправить ответ. Проверьте соединение и попробуйте снова.",
+                success: "Спасибо! Ваш ответ учтён."
+            },
+            en: {
+                title: "The Great Midea Corporate Event",
+                subtitle: "New Office & New Year 2027",
+                date_label: "Date",
+                date_value: "December 21, 2026",
+                time_label: "Time",
+                time_value: "17:00–21:00",
+                venue_label: "Venue",
+                venue_value: "Meeting point: Moscow, Kiyevskaya metro station, Hotel Ukraina pier, Radisson Boat",
+                map_btn: "Open in Yandex Maps",
+                dress_label: "Dress Code",
+                dress_value: "Great Gatsby Dress Code",
+                warning: "Important: the boat departs from the pier exactly at 17:00. Please arrive in advance — boarding starts early, and it will not be possible to join the boat after departure.",
+                description: "We invite you to The Great Midea Corporate Event, taking place on December 21, 2026.\nThis day marks two major milestones: moving to our new office and celebrating the New Year 2027. New office, New Year, New chapter!\nThe theme of the evening is Jazz & The Great Gatsby. Expect an evening in Art Deco aesthetic and Great Gatsby style: live jazz, a golden age atmosphere, and a wonderful occasion to celebrate an important milestone with colleagues — aboard the Radisson boat.",
+                name_label: "What is your name?",
+                name_placeholder: "Enter your first and last name",
+                attendance_label: "Will you join the corporate event The Great Midea Corporate Event?",
+                yes: "Yes",
+                no: "No",
+                submit_btn: "Send response",
+                sending: "Sending…",
+                error_name: "Please enter your name.",
+                error_attendance: "Please select an answer.",
+                error_network: "Could not send your response. Please check your connection and try again.",
+                success: "Thank you! Your response has been recorded."
+            }
+        };
+
+        let currentLang = 'ru';
+        let isSubmitting = false;
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn.disabled && isSubmitting) {
+                submitBtn.textContent = translations[lang].sending;
+            } else {
+                submitBtn.textContent = translations[lang].submit_btn;
+            }
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                setLanguage(e.currentTarget.getAttribute('data-lang'));
+                document.getElementById('nameGroup').classList.remove('has-error');
+                document.getElementById('attendanceGroup').classList.remove('has-error');
+            });
+        });
+
+        function showSuccess() {
+            document.getElementById('rsvpSection').style.display = 'none';
+            document.getElementById('successBox').style.display = 'block';
+        }
+
+        function showNetworkError() {
+            const submitBtn = document.getElementById('submitBtn');
+            const networkError = document.getElementById('networkError');
+            isSubmitting = false;
+            submitBtn.disabled = false;
+            submitBtn.textContent = translations[currentLang].submit_btn;
+            networkError.style.display = 'block';
+        }
+
+        // === Резервный канал через iframe (если fetch не сработал) ===
+        function submitViaIframe(baseUrl, params) {
+            return new Promise((resolve, reject) => {
+                const iframe = document.getElementById('hidden_iframe');
+                if (!iframe) {
+                    reject(new Error('iframe not found'));
+                    return;
+                }
+
+                let settled = false;
+                const cleanup = () => {
+                    iframe.removeEventListener('load', onLoad);
+                };
+                const onLoad = () => {
+                    if (settled) return;
+                    settled = true;
+                    cleanup();
+                    resolve();
+                };
+
+                iframe.addEventListener('load', onLoad);
+
+                const tempForm = document.createElement('form');
+                tempForm.method = 'GET';
+                tempForm.action = baseUrl;
+                tempForm.target = 'hidden_iframe';
+                tempForm.style.display = 'none';
+
+                params.forEach((value, key) => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value;
+                    tempForm.appendChild(input);
+                });
+
+                document.body.appendChild(tempForm);
+                tempForm.submit();
+
+                setTimeout(() => {
+                    if (tempForm.parentNode) tempForm.parentNode.removeChild(tempForm);
+                }, 200);
+
+                // Страховка: если onload не сработал — считаем отправленным
+                setTimeout(() => {
+                    if (settled) return;
+                    settled = true;
+                    cleanup();
+                    resolve();
+                }, 8000);
+            });
+        }
+
+        const form = document.getElementById('rsvpForm');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (isSubmitting) return;
+
+            const nameInput = document.getElementById('userName');
+            const attendanceRadios = document.getElementsByName('attendance');
+
+            const nameGroup = document.getElementById('nameGroup');
+            const attendanceGroup = document.getElementById('attendanceGroup');
+
+            let isValid = true;
+            let attendanceValue = null;
+
+            if (nameInput.value.trim() === '') {
+                nameGroup.classList.add('has-error');
+                isValid = false;
+            } else {
+                nameGroup.classList.remove('has-error');
+            }
+
+            for (const radio of attendanceRadios) {
+                if (radio.checked) {
+                    attendanceValue = radio.value;
+                    break;
+                }
+            }
+
+            if (!attendanceValue) {
+                attendanceGroup.classList.add('has-error');
+                isValid = false;
+            } else {
+                attendanceGroup.classList.remove('has-error');
+            }
+
+            if (!isValid) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            const networkError = document.getElementById('networkError');
+
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = translations[currentLang].sending;
+            networkError.style.display = 'none';
+
+            const params = new URLSearchParams();
+            params.set('name', nameInput.value.trim());
+            params.set('attendance', attendanceValue);
+            params.set('language', currentLang);
+            params.set('t', String(Date.now()));
+
+            const baseUrl = form.getAttribute('action');
+            const url = baseUrl + '?' + params.toString();
+
+            try {
+                // Основной канал: fetch + no-cors (лучше всего работает на мобильных)
+                await fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    redirect: 'follow'
+                });
+                showSuccess();
+            } catch (err) {
+                console.warn('fetch failed, falling back to iframe:', err);
+                try {
+                    // Резервный канал
+                    await submitViaIframe(baseUrl, params);
+                    showSuccess();
+                } catch (err2) {
+                    console.error('iframe fallback failed:', err2);
+                    showNetworkError();
+                }
+            }
+        });
+
+        document.getElementById('userName').addEventListener('input', function () {
+            if (this.value.trim() !== '') {
+                document.getElementById('nameGroup').classList.remove('has-error');
+            }
+        });
+
+        document.querySelectorAll('input[name="attendance"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                document.getElementById('attendanceGroup').classList.remove('has-error');
+            });
+        });
+
+        setLanguage('ru');
+    </script>
+</body>
+</html>
