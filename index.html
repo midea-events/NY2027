@@ -484,7 +484,7 @@
 Тематика вечера: джаз и The Great Gatsby. Вас ждёт вечер в эстетике Art Deco и «Великого Гэтсби»: живой джаз, атмосфера золотого века и повод отметить важный этап в кругу коллег — на борту теплохода Radisson.</p>
 
             <section class="rsvp-section" id="rsvpSection">
-                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="GET" novalidate>
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbzL4hN3vi2aGDdhgRx4bxTAoAS9lxgRL2wjIHaSi2Y-bgwYZTYgKV0AvHTevFeidawZuw/exec" method="POST" novalidate>
                     <div class="form-group" id="nameGroup">
                         <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
                         <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
@@ -699,19 +699,21 @@
             networkError.style.display = 'none';
 
             const formData = new FormData(form);
-            const params = new URLSearchParams(formData).toString();
-            const url = form.action + '?' + params;
-
+            
             try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    mode: 'no-cors'
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: formData
                 });
                 
-                // no-cors mode doesn't give us response status, but request was sent
-                showSuccess();
+                if (response.ok) {
+                    showSuccess();
+                } else {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
             } catch (error) {
-                // Network error
+                console.error('Submit failed:', error);
                 networkError.style.display = 'block';
                 submitBtn.disabled = false;
                 submitBtn.textContent = translations[currentLang].submit_btn;
