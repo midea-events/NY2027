@@ -447,7 +447,7 @@
             <section class="hero">
                 <h1 data-i18n="title">The Great Midea Corporate Event</h1>
                 <p class="subtitle" data-i18n="subtitle">Новый офис и Новый 2027 год</p>
-                <img src="Midea标志迁移至船身.jpg" alt="The Great Midea Corporate Event" />
+                <img src="images/Midea标志迁移至船身.jpg" alt="The Great Midea Corporate Event" />
             </section>
 
             <div class="event-details-wrapper">
@@ -471,7 +471,7 @@
                     </div>
                 </section>
                 <div class="event-image-container">
-                    <img src="GreatGatsby_dresscode.jpg" alt="Great Gatsby Dress Code" class="event-side-image" onerror="this.style.display='none'" />
+                    <img src="images/GreatGatsby_dresscode.jpg" alt="Great Gatsby Dress Code" class="event-side-image" onerror="this.style.display='none'" />
                 </div>
             </div>
 
@@ -485,7 +485,7 @@
 
             <section class="rsvp-section" id="rsvpSection">
                 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbxVpVWr1T903MTjpWpUBR9cAEsiWrYnPKvlVVD61WaT8GHzKa5_m3Lz7AAygrn_3_uI5Q/exec" method="GET" target="hidden_iframe" novalidate>
+                <form id="rsvpForm" action="" method="GET" target="hidden_iframe" novalidate>
                     <div class="form-group" id="nameGroup">
                         <label for="userName" class="form-label" data-i18n="name_label">Как вас зовут?</label>
                         <input type="text" id="userName" name="name" class="form-input" data-i18n-placeholder="name_placeholder" placeholder="Укажите имя и фамилию" autocomplete="name" required>
@@ -517,13 +517,15 @@
 
             <section class="success-box" id="successBox" role="status" aria-live="polite">
                 <!-- ДОБАВЛЕНА КАРТИНКА СЮДА -->
-                <img src="gatsby-success.jpg.png" alt="Jay Gatsby" class="success-image" onerror="this.style.display='none'" />
+                <img src="images/gatsby-success.jpg" alt="Jay Gatsby" class="success-image" onerror="this.style.display='none'" />
                 <h2 data-i18n="success">Спасибо! Ваш ответ учтён.</h2>
             </section>
         </main>
     </div>
 
+    <script src="config.js"></script>
     <script>
+        document.getElementById('rsvpForm').action = window.APP_CONFIG.rsvpEndpoint;
         const translations = {
             ru: {
                 title: "The Great Midea Corporate Event",

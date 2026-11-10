@@ -1,0 +1,33 @@
+{
+	storage file_system ./caddy_storage
+	log default {
+		output file ./logs/caddy-system.log {
+			roll_size 10MiB
+			roll_keep 5
+			roll_keep_for 2160h
+		}
+		format console {
+			time_local
+		}
+	}
+}
+
+https://midea-events.duckdns.org {
+	log {
+		output file ./logs/midea-events.log {
+			roll_size 20MiB
+			roll_keep 10
+			roll_keep_for 2160h
+		}
+		format console {
+			time_local
+		}
+	}
+
+	redir /NY2027 /NY2027/ 301
+	handle_path /NY2027/* {
+		root * ./www/midea-events/NY2027
+		encode zstd gzip
+		file_server
+	}
+}
