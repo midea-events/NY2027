@@ -702,20 +702,16 @@
             const params = new URLSearchParams(formData).toString();
             const url = form.action + '?' + params;
             
-            try {
-                await fetch(url, {
-                    method: 'GET',
-                    mode: 'no-cors'
-                });
-                
-                // In no-cors mode, response is "opaque" but request was sent
-                showSuccess();
-            } catch (error) {
-                console.error('Submit failed:', error);
-                networkError.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = translations[currentLang].submit_btn;
-            }
+            // Send request without waiting for response (fire and forget)
+            fetch(url, {
+                method: 'GET',
+                mode: 'no-cors'
+            }).catch(error => {
+                console.error('Submit error:', error);
+            });
+            
+            // Show success immediately
+            showSuccess();
         });
 
         document.getElementById('userName').addEventListener('input', function () {
