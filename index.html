@@ -699,12 +699,13 @@
             networkError.style.display = 'none';
 
             const formData = new FormData(form);
+            const params = new URLSearchParams(formData).toString();
+            const url = form.action + '?' + params;
             
             try {
-                await fetch(form.action, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
+                await fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors'
                 });
                 
                 // In no-cors mode, response is "opaque" but request was sent
