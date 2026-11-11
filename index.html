@@ -66,16 +66,10 @@
             backdrop-filter: blur(10px);
         }
 
-        .brand {
-            font-family: var(--font-sans);
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--black);
-            background-color: var(--white);
-            padding: 4px 12px;
-            border-radius: 4px;
-            text-transform: uppercase;
+        .brand-logo {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
         }
 
         .lang-switch {
@@ -434,7 +428,7 @@
 <body>
 
     <header>
-        <div class="brand">Midea</div>
+        <img src="Midea_Logo_CMYK_blue_on_black_Register.jpg" alt="Midea" class="brand-logo">
         <div class="lang-switch">
             <button class="lang-btn active" data-lang="ru" aria-label="Переключить на русский">RU</button>
             <button class="lang-btn" data-lang="en" aria-label="Switch to English">EN</button>
